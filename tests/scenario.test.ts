@@ -34,9 +34,7 @@ describe('JSON scenario runner', () => {
     const final = snapshots[snapshots.length - 1];
 
     expect(final.emergencyOff).toBe(true);
-    expect(final.alerts.some((alert) => alert.code === 'TRANSITION_FAILURE')).toBe(
-      true
-    );
+    expect(final.alerts.some((alert) => alert.code === 'TRANSITION_FAILURE')).toBe(true);
   });
 
   test('rejects invalid scenario event kind', async () => {

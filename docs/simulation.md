@@ -24,13 +24,13 @@ Minimal schema:
 
 ```json
 {
-	"name": "Case Name",
-	"totalSeconds": 70,
-	"stepSeconds": 1,
-	"events": [
-		{ "atSeconds": 5, "kind": "traffic", "axis": "EW", "waiting": true },
-		{ "atSeconds": 10, "kind": "pedestrian" }
-	]
+  "name": "Case Name",
+  "totalSeconds": 70,
+  "stepSeconds": 1,
+  "events": [
+    { "atSeconds": 5, "kind": "traffic", "axis": "EW", "waiting": true },
+    { "atSeconds": 10, "kind": "pedestrian" }
+  ]
 }
 ```
 

@@ -1,4 +1,4 @@
-import {
+import type {
   AlertRecord,
   ControllerSnapshot,
   RoadAxis,
@@ -315,7 +315,10 @@ export class TrafficController {
 
   private shutdownToEmergency(code: AlertRecord['code'], message: string): void {
     this.pushAlert(code, message);
-    this.pushAlert('EMERGENCY_OFF', 'All installations switched off for fail-safe state.');
+    this.pushAlert(
+      'EMERGENCY_OFF',
+      'All installations switched off for fail-safe state.'
+    );
 
     this.phase = 'EMERGENCY_OFF';
     this.phaseElapsedSeconds = 0;

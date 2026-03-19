@@ -83,8 +83,6 @@ describe('TrafficController', () => {
     const snapshot = controller.getSnapshot();
 
     expect(snapshot.emergencyOff).toBe(true);
-    expect(snapshot.alerts.some((a) => a.code === 'LIGHT_ILLUMINATE_FAILURE')).toBe(
-      true
-    );
+    expect(snapshot.alerts.some((a) => a.code === 'LIGHT_ILLUMINATE_FAILURE')).toBe(true);
   });
 });

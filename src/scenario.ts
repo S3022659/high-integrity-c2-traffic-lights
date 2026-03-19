@@ -1,8 +1,9 @@
 import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import { TrafficController } from './controller';
-import { RoadAxis } from './types';
-import { ScheduledEvent, SimulationOptions, runSimulation } from './simulator';
+import type { TrafficController } from './controller';
+import type { RoadAxis } from './types';
+import type { ScheduledEvent, SimulationOptions } from './simulator';
+import { runSimulation } from './simulator';
 
 type LightFailureKind = 'illuminate' | 'deilluminate';
 type ScenarioEventKind =
@@ -261,15 +262,13 @@ function asBoolean(value: unknown, field: string, scenarioPath: string): boolean
   throw new Error(`Scenario file ${scenarioPath} field ${field} must be boolean.`);
 }
 
-function asNonEmptyString(
-  value: unknown,
-  field: string,
-  scenarioPath: string
-): string {
+function asNonEmptyString(value: unknown, field: string, scenarioPath: string): string {
   if (typeof value === 'string' && value.trim().length > 0) {
     return value;
   }
-  throw new Error(`Scenario file ${scenarioPath} field ${field} must be a non-empty string.`);
+  throw new Error(
+    `Scenario file ${scenarioPath} field ${field} must be a non-empty string.`
+  );
 }
 
 function asNonNegativeNumber(
@@ -289,7 +288,9 @@ function asPositiveNumber(value: unknown, field: string, scenarioPath: string): 
   if (typeof value === 'number' && Number.isFinite(value) && value > 0) {
     return value;
   }
-  throw new Error(`Scenario file ${scenarioPath} field ${field} must be a positive number.`);
+  throw new Error(
+    `Scenario file ${scenarioPath} field ${field} must be a positive number.`
+  );
 }
 
 function isObject(value: unknown): value is Record<string, unknown> {

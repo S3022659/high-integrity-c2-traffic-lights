@@ -1,5 +1,5 @@
 import { TrafficController } from './controller';
-import { ControllerSnapshot } from './types';
+import type { ControllerSnapshot } from './types';
 
 export interface ScheduledEvent {
   atSeconds: number;
@@ -23,19 +23,14 @@ export function runSimulation(options: SimulationOptions): ControllerSnapshot[] 
     throw new Error('stepSeconds must be > 0');
   }
 
-  const events = [...(options.events ?? [])].sort(
-    (a, b) => a.atSeconds - b.atSeconds
-  );
+  const events = [...(options.events ?? [])].sort((a, b) => a.atSeconds - b.atSeconds);
   const snapshots: ControllerSnapshot[] = [controller.getSnapshot()];
 
   let eventIndex = 0;
   let elapsed = 0;
 
   while (elapsed < options.totalSeconds) {
-    while (
-      eventIndex < events.length &&
-      events[eventIndex].atSeconds <= elapsed + 1e-9
-    ) {
+    while (eventIndex < events.length && events[eventIndex].atSeconds <= elapsed + 1e-9) {
       events[eventIndex].action(controller);
       eventIndex += 1;
     }
