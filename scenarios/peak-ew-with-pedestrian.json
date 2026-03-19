@@ -1,0 +1,18 @@
+{
+  "name": "Peak EW with Pedestrian Request",
+  "description": "EW traffic demand appears, then a pedestrian crossing is requested before phase handover.",
+  "totalSeconds": 70,
+  "stepSeconds": 1,
+  "events": [
+    {
+      "atSeconds": 5,
+      "kind": "traffic",
+      "axis": "EW",
+      "waiting": true
+    },
+    {
+      "atSeconds": 10,
+      "kind": "pedestrian"
+    }
+  ]
+}

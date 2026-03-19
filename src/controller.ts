@@ -115,10 +115,7 @@ export class TrafficController {
   }
 
   public getSnapshot(): ControllerSnapshot {
-    const crossingActive =
-      this.isAllRedPhase() &&
-      this.pedestrianCrossingRemainingSeconds > EPSILON &&
-      this.phaseElapsedSeconds + EPSILON < this.pedestrianCrossingRemainingSeconds;
+    const crossingActive = this.isPedestrianHoldActive();
 
     return {
       timeSeconds: this.nowSeconds,
@@ -287,7 +284,7 @@ export class TrafficController {
       return;
     }
 
-    const crossingActive = this.pedestrianCrossingRemainingSeconds > EPSILON;
+    const crossingActive = this.isPedestrianHoldActive();
     if (crossingActive && (nsAllowsTraffic || ewAllowsTraffic)) {
       this.shutdownToEmergency(
         'SAFETY_CONFLICT',
@@ -306,6 +303,14 @@ export class TrafficController {
 
   private isAllRedPhase(): boolean {
     return this.phase === 'ALL_RED_BEFORE_EW' || this.phase === 'ALL_RED_BEFORE_NS';
+  }
+
+  private isPedestrianHoldActive(): boolean {
+    return (
+      this.isAllRedPhase() &&
+      this.pedestrianCrossingRemainingSeconds > EPSILON &&
+      this.phaseElapsedSeconds + EPSILON < this.pedestrianCrossingRemainingSeconds
+    );
   }
 
   private shutdownToEmergency(code: AlertRecord['code'], message: string): void {

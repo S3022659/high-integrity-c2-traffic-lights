@@ -115,3 +115,31 @@ An initial TypeScript implementation has been started in this repository.
 	```bash
 	npm start
 	```
+
+5. Run a JSON scenario case:
+
+	```bash
+	npm run scenario -- scenarios/peak-ew-with-pedestrian.json
+	```
+
+## JSON scenario files
+
+Scenario files are stored in `scenarios/` and contain:
+
+- `name`: case name.
+- `totalSeconds`: simulation duration.
+- `stepSeconds`: optional simulation step size.
+- `events`: ordered or unordered list of timed control events.
+
+Supported event kinds:
+
+- `traffic`: set sensor traffic waiting state on an axis.
+- `pedestrian`: request pedestrian crossing.
+- `sensorFailure`: inject sensor failure on an axis.
+- `transitionFailure`: inject transition failure on an axis.
+- `lightFailure`: inject light failure with kind `illuminate` or `deilluminate`.
+
+Example files included:
+
+- `scenarios/peak-ew-with-pedestrian.json`
+- `scenarios/transition-failure-ew.json`

@@ -2,6 +2,38 @@
 
 Simulation is run by `runSimulation` in `src/simulator.ts`.
 
+## JSON scenario runner
+
+Run a case file with:
+
+```bash
+npm run scenario -- scenarios/peak-ew-with-pedestrian.json
+```
+
+Scenario files are loaded and validated by `src/scenario.ts`.
+
+Supported event kinds:
+
+- `traffic` with `axis` (`NS` or `EW`) and `waiting` (`true` or `false`)
+- `pedestrian`
+- `sensorFailure` with `axis`
+- `transitionFailure` with `axis`
+- `lightFailure` with `failureKind` (`illuminate` or `deilluminate`)
+
+Minimal schema:
+
+```json
+{
+	"name": "Case Name",
+	"totalSeconds": 70,
+	"stepSeconds": 1,
+	"events": [
+		{ "atSeconds": 5, "kind": "traffic", "axis": "EW", "waiting": true },
+		{ "atSeconds": 10, "kind": "pedestrian" }
+	]
+}
+```
+
 ## Capabilities
 
 - Time-stepped execution.

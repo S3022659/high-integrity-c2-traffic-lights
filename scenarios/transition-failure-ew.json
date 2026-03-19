@@ -1,0 +1,19 @@
+{
+  "name": "EW Transition Failure",
+  "description": "EW transition is forced to fail, demonstrating emergency all-off behavior and alerting.",
+  "totalSeconds": 50,
+  "stepSeconds": 1,
+  "events": [
+    {
+      "atSeconds": 2,
+      "kind": "traffic",
+      "axis": "EW",
+      "waiting": true
+    },
+    {
+      "atSeconds": 25,
+      "kind": "transitionFailure",
+      "axis": "EW"
+    }
+  ]
+}

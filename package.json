@@ -7,7 +7,8 @@
     "build": "tsc -p tsconfig.json",
     "test": "jest --runInBand",
     "test:watch": "jest --watch",
-    "start": "ts-node src/index.ts"
+    "start": "ts-node src/index.ts",
+    "scenario": "ts-node src/run-scenario.ts"
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",
