@@ -56,3 +56,62 @@ You are then required to model your understanding of the system and undertake a 
 - How does it respons to unexpected issues
 - Does it enter an erroneous states
 - The simulation should all control of this behaviour
+
+## Project bootstrap status
+
+An initial TypeScript implementation has been started in this repository.
+
+### Included now
+
+- Safety-focused traffic controller state machine for a 4-way junction.
+- Paired installation behavior (NS synchronized, EW synchronized).
+- UK signal sequence support: Red -> Red+Amber -> Green -> Amber -> Red.
+- Timing rules:
+  - Intermediate signals at 1.5s.
+  - Green capped at 30s when intersecting traffic is waiting.
+  - Green can remain indefinitely when intersecting traffic is empty.
+  - Pedestrian request handled with 15s all-red hold at the next all-red phase.
+- Fault behavior and alerts:
+  - Sensor failure fallback to 30s green cap.
+  - Transition failure fails safe to all-lights-off + alert.
+  - Light illuminate/de-illuminate failure fails safe to all-lights-off + alert.
+- Jest unit tests for key safety and timing behavior.
+- Mermaid UML model and safety analyses (STPA + HAZOP).
+
+## Repository layout
+
+- `src/controller.ts`: Core control logic and safety constraints.
+- `src/simulator.ts`: Time-stepped simulation harness.
+- `src/types.ts`: Domain model and snapshot/alert types.
+- `src/index.ts`: Example runnable simulation scenario.
+- `tests/controller.test.ts`: Jest tests.
+- `docs/uml-model.md`: Mermaid class and state diagrams.
+- `docs/stpa.md`: STPA analysis.
+- `docs/hazop.md`: HAZOP analysis.
+- `docs/simulation.md`: Simulation guidance.
+
+## Getting started
+
+1. Install dependencies:
+
+	```bash
+	npm install
+	```
+
+2. Run tests:
+
+	```bash
+	npm test
+	```
+
+3. Build TypeScript:
+
+	```bash
+	npm run build
+	```
+
+4. Run the sample simulation:
+
+	```bash
+	npm start
+	```
