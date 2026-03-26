@@ -1,6 +1,24 @@
 import { TrafficController } from '../src/controller';
 
 describe('TrafficController', () => {
+  test('throws when stepping with negative delta seconds', () => {
+    const controller = new TrafficController();
+
+    expect(() => controller.step(-0.1)).toThrow('step deltaSeconds must be >= 0');
+  });
+
+  test('zero-second step keeps state unchanged', () => {
+    const controller = new TrafficController();
+    const before = controller.getSnapshot();
+
+    controller.step(0);
+    const after = controller.getSnapshot();
+
+    expect(after.timeSeconds).toBe(before.timeSeconds);
+    expect(after.phase).toBe(before.phase);
+    expect(after.lanes).toEqual(before.lanes);
+  });
+
   test('holds green indefinitely when intersecting road is empty and sensors healthy', () => {
     const controller = new TrafficController();
 
@@ -57,6 +75,18 @@ describe('TrafficController', () => {
 
     expect(snapshot.phase).toBe('EW_GREEN');
     expect(snapshot.alerts.some((a) => a.code === 'SENSOR_FAILURE')).toBe(true);
+  });
+
+  test('ignores traffic updates for a failed sensor axis', () => {
+    const controller = new TrafficController();
+    controller.setTrafficDetected('EW', true);
+    controller.injectSensorFailure('EW');
+    controller.setTrafficDetected('EW', false);
+
+    controller.step(33.01);
+    const snapshot = controller.getSnapshot();
+
+    expect(snapshot.phase).toBe('EW_GREEN');
   });
 
   test('transition failure causes emergency all-off state', () => {

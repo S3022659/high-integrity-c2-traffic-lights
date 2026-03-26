@@ -1,9 +1,42 @@
 import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
-import { loadScenarioFromFile, runScenario } from '../src/scenario';
+import {
+  loadScenarioFromFile,
+  runScenario,
+  scenarioToSimulationOptions
+} from '../src/scenario';
 
 describe('JSON scenario runner', () => {
+  test('maps scenario definition to simulation options', () => {
+    const definition = {
+      name: 'Simple Map Test',
+      totalSeconds: 12,
+      stepSeconds: 0.5,
+      events: [
+        { atSeconds: 1, kind: 'traffic' as const, axis: 'EW' as const, waiting: true },
+        { atSeconds: 2, kind: 'pedestrian' as const }
+      ]
+    };
+
+    const options = scenarioToSimulationOptions(definition);
+
+    expect(options.totalSeconds).toBe(12);
+    expect(options.stepSeconds).toBe(0.5);
+    expect(options.events).toHaveLength(2);
+  });
+
+  test('pedestrian event in scenario sets pedestrian waiting state', () => {
+    const snapshots = runScenario({
+      name: 'Pedestrian Event',
+      totalSeconds: 10,
+      stepSeconds: 1,
+      events: [{ atSeconds: 1, kind: 'pedestrian' }]
+    });
+
+    expect(snapshots.some((snapshot) => snapshot.pedestrian.waiting)).toBe(true);
+  });
+
   test('loads and executes sample pedestrian scenario from JSON file', async () => {
     const scenarioPath = resolve(
       __dirname,
