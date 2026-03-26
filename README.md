@@ -125,7 +125,12 @@ An initial TypeScript implementation has been started in this repository.
    ```bash
    npm run scenario -- scenarios/peak-ew-with-pedestrian.json
    ```
-
+   ```bash
+   npm run scenario -- scenarios/transition-failure-ew.json
+   ```
+  ```bash
+   npm run scenario -- scenarios/night-ns-priority.json
+   ```   
 6. Run static analysis and tests in one command:
 
    ```bash

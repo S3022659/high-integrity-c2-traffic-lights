@@ -1,0 +1,44 @@
+{
+  "name": "Night NS Priority with Pedestrian Request",
+  "description": "Low traffic operation with repeated NS demand and intermittent EW pedestrian/traffic demand.",
+  "totalSeconds": 40,
+  "stepSeconds": 1,
+  "events": [
+    {
+      "atSeconds": 2,
+      "kind": "traffic",
+      "axis": "NS",
+      "waiting": true
+    },
+    {
+      "atSeconds": 5,
+      "kind": "pedestrian",
+      "axis": "EW",
+      "waiting": true
+    },
+    {
+      "atSeconds": 9,
+      "kind": "traffic",
+      "axis": "NS",
+      "waiting": true
+    },
+    {
+      "atSeconds": 16,
+      "kind": "traffic",
+      "axis": "EW",
+      "waiting": true
+    },
+    {
+      "atSeconds": 22,
+      "kind": "pedestrian",
+      "axis": "EW",
+      "waiting": true
+    },
+    {
+      "atSeconds": 30,
+      "kind": "traffic",
+      "axis": "NS",
+      "waiting": true
+    }
+  ]
+}
