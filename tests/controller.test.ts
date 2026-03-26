@@ -1,6 +1,14 @@
 import { TrafficController } from '../src/controller';
 
 describe('TrafficController', () => {
+  const assertInvariantI1NoConflictingGreens = (controller: TrafficController): void => {
+    const snapshot = controller.getSnapshot();
+    const nsGreen = snapshot.lanes.northbound === 'GREEN';
+    const ewGreen = snapshot.lanes.eastbound === 'GREEN';
+
+    expect(nsGreen && ewGreen).toBe(false);
+  };
+
   test('throws when stepping with negative delta seconds', () => {
     const controller = new TrafficController();
 
@@ -114,5 +122,59 @@ describe('TrafficController', () => {
 
     expect(snapshot.emergencyOff).toBe(true);
     expect(snapshot.alerts.some((a) => a.code === 'LIGHT_ILLUMINATE_FAILURE')).toBe(true);
+  });
+
+  // Formal traceability target:
+  // docs/formal-requirements.md
+  describe('Formal safety contracts (Hoare-derived)', () => {
+    // Formal traceability:
+    // SR-1, I1
+    // { true } step(dt) { !(NS_GREEN && EW_GREEN) }
+    // Invariant: intersecting roads never receive simultaneous pass signals.
+    test('SR-1_I1__no_conflicting_greens', () => {
+      const controller = new TrafficController();
+
+      controller.setTrafficDetected('EW', true);
+
+      for (let i = 0; i < 20; i += 1) {
+        controller.step(2);
+        assertInvariantI1NoConflictingGreens(controller);
+      }
+    });
+
+    // Formal traceability:
+    // SR-2, I2
+    // { crossingActive = true } step(dt) { NS != GREEN && EW != GREEN }
+    // Invariant: pedestrian crossing excludes all traffic pass signals.
+    test('SR-2_I2__pedestrian_crossing_blocks_traffic_green', () => {
+      const controller = new TrafficController();
+
+      controller.setTrafficDetected('EW', true);
+      controller.requestPedestrianCrossing();
+
+      controller.step(31.6);
+      const duringCrossing = controller.getSnapshot();
+
+      expect(duringCrossing.pedestrian.crossingActive).toBe(true);
+      expect(duringCrossing.lanes.northbound).not.toBe('GREEN');
+      expect(duringCrossing.lanes.eastbound).not.toBe('GREEN');
+    });
+
+    // Formal traceability:
+    // SR-3, I3
+    // { transition fault injected } step(dt) { emergencyOff && NS=OFF && EW=OFF }
+    // Invariant: emergency-off mode enforces fail-safe all-off lights.
+    test('SR-3_I3__transition_fault_forces_emergency_all_off', () => {
+      const controller = new TrafficController();
+
+      controller.setTrafficDetected('EW', true);
+      controller.injectTransitionFailure('EW');
+      controller.step(33.1);
+
+      const snapshot = controller.getSnapshot();
+      expect(snapshot.emergencyOff).toBe(true);
+      expect(snapshot.lanes.northbound).toBe('OFF');
+      expect(snapshot.lanes.eastbound).toBe('OFF');
+    });
   });
 });

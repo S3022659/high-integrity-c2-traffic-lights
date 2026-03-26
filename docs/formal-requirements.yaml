@@ -1,0 +1,18 @@
+requirements:
+  - id: SR-1
+    invariantId: I1
+    testId: SR-1_I1
+    title: no_conflicting_greens
+    hoare: "{ true } step(dt) { !(NS_GREEN && EW_GREEN) }"
+
+  - id: SR-2
+    invariantId: I2
+    testId: SR-2_I2
+    title: pedestrian_crossing_blocks_traffic_green
+    hoare: "{ crossingActive = true } step(dt) { NS != GREEN && EW != GREEN }"
+
+  - id: SR-3
+    invariantId: I3
+    testId: SR-3_I3
+    title: transition_fault_forces_emergency_all_off
+    hoare: "{ transition fault injected } step(dt) { emergencyOff && NS=OFF && EW=OFF }"

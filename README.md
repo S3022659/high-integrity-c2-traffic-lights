@@ -92,6 +92,8 @@ An initial TypeScript implementation has been started in this repository.
 - `docs/uml-model.md`: Mermaid class and state diagrams.
 - `docs/stpa.md`: STPA analysis.
 - `docs/hazop.md`: HAZOP analysis.
+- `docs/formal-requirements.md`: Hoare-style formal safety requirements and traceability.
+- `docs/formal-requirements.yaml`: Machine-readable requirement and test ID registry.
 - `docs/simulation.md`: Simulation guidance.
 
 ## Getting started
